@@ -2,8 +2,8 @@
 
 
 $(document).ready(function () {
-   // none();
-    filterBy(awamerList);
+    none();
+    //filterBy(awamerList);
     $("#filterList").on("change", filterChanged);
     $("#suraList").on("change", suraSelected);
     initSuraList();
