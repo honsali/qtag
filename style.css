@@ -9,5 +9,5 @@
 .even{background-color: #EEEEEE}
 .odd{background-color: #F9F9F9}
 
-#filter {font-size: 12px;font-family: "Noto Kufi Arabic";padding:2px}
+.filter-cell > select {font-size: 12px;font-family: "Noto Kufi Arabic";padding:2px}
 .filter-cell{padding:10px 0 5px 0}

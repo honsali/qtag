@@ -4,17 +4,27 @@
 $(document).ready(function () {
     none();
 
-    $("#filter").on("change", filter);
+    $("#filterList").on("change", filterChanged);
+    $("#suraList").on("change", suraSelected);
+    initSuraList();
+    $("#suraList").hide();
 
 });
 
-function filter() {
-    var val = $("#filter").val();
+function filterChanged() {
+    $("#suraList").hide();
+    var val = $("#filterList").val();
     switch (val) {
         case "1":
-            filterBy(awamerList);
+            showSuraList();
             break;
         case "2":
+            all();
+            break;
+        case "3":
+            filterBy(awamerList);
+            break;
+        case "4":
             filterBy(hikamList);
             break;
         default:
@@ -23,7 +33,19 @@ function filter() {
 
 }
 
-function none() {
+function showSuraList(){
+    $("#suraList").show();
+
+}
+
+function initSuraList(){
+    $("#suraList").empty();
+    for (var i = 0; i < surat.length; i++) {//
+        $("#suraList").append('<option value="'+i+'">'+surat[i]+'</option');
+    }
+}
+
+function all(){
     $("#rowList").empty();
     for (var i = 0; i < data.length; i++) {//
         var evenodd = i % 2 == 0 ? "even" : "odd";
@@ -34,6 +56,29 @@ function none() {
             '<div class="col-md-1 sura_text text-right">' + surat[data[i].sura] + '</div>' +
             '</div>';
         $("#rowList").append(html);
+    }
+}
+
+function none() {
+    $("#rowList").empty();
+}
+
+function suraSelected() {
+    var id = $("#suraList").val();
+    var suraId = parseInt(id);
+    $("#rowList").empty();
+    for (var i = 0; i < data.length; i++) {//data.length
+        var x =filterList[i];
+        if (data[i].sura ===suraId) {
+            var evenodd = i % 2 == 0 ? "even" : "odd";
+            var html = '' +
+                '<div class="row ' + evenodd + '">'+
+                '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
+                '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
+                '<div class="col-md-1 sura_text text-right">' + surat[data[i].sura] + '</div>' +
+                '</div>';
+            $("#rowList").append(html);
+        }
     }
 }
 
