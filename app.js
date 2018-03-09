@@ -6,8 +6,10 @@ $(document).ready(function () {
     //filterBy(awamerList);
     $("#filterList").on("change", filterChanged);
     $("#suraList").on("change", suraSelected);
+    $("#query").on("change", queryChanged);
     initSuraList();
     $("#suraList").hide();
+    $("#query").hide();
 
 });
 
@@ -22,12 +24,15 @@ function filterChanged() {
             all();
             break;
         case "3":
-            filterBy(awamerList);
+            showQuery();
             break;
         case "4":
-            filterBy(hikamList);
+            filterBy(awamerList);
             break;
         case "5":
+            filterBy(hikamList);
+            break;
+        case "6":
             filterBy(asmaaList);
             break;
         default:
@@ -36,24 +41,30 @@ function filterChanged() {
 
 }
 
-function showSuraList(){
+function showSuraList() {
     $("#suraList").show();
 
 }
 
-function initSuraList(){
+function showQuery() {
+    $("#query").val("");
+    $("#query").show();
+}
+
+
+function initSuraList() {
     $("#suraList").empty();
     for (var i = 0; i < surat.length; i++) {//
-        $("#suraList").append('<option value="'+i+'">'+surat[i]+'</option');
+        $("#suraList").append('<option value="' + i + '">' + surat[i] + '</option');
     }
 }
 
-function all(){
+function all() {
     $("#rowList").empty();
     for (var i = 0; i < data.length; i++) {//
         var evenodd = i % 2 == 0 ? "even" : "odd";
         var html = '' +
-            '<div class="row ' + evenodd + '">'+
+            '<div class="row ' + evenodd + '">' +
             '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
             '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
             '<div class="col-md-1 sura_text text-right">' + surat[data[i].sura] + '</div>' +
@@ -71,11 +82,10 @@ function suraSelected() {
     var suraId = parseInt(id);
     $("#rowList").empty();
     for (var i = 0; i < data.length; i++) {//data.length
-        var x =filterList[i];
-        if (data[i].sura ===suraId) {
+        if (data[i].sura === suraId) {
             var evenodd = i % 2 == 0 ? "even" : "odd";
             var html = '' +
-                '<div class="row ' + evenodd + '">'+
+                '<div class="row ' + evenodd + '">' +
                 '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
                 '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
                 '<div class="col-md-1 sura_text text-right">' + surat[data[i].sura] + '</div>' +
@@ -85,17 +95,37 @@ function suraSelected() {
     }
 }
 
+function queryChanged() {
+    var q = $("#query").val();
+    if (q && q.length > 3) {
+        $("#rowList").empty();
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].text.indexOf(q)>-1) {
+                var evenodd = i % 2 == 0 ? "even" : "odd";
+                var html = '' +
+                    '<div class="row ' + evenodd + '">' +
+                    '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
+                    '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
+                    '<div class="col-md-1 sura_text text-right">' + surat[data[i].sura] + '</div>' +
+                    '</div>';
+                $("#rowList").append(html);
+            }
+        }
+    }else if(!q || q===''){
+        $("#rowList").empty();
+    }
+}
 
 function filterBy(filterList) {
     $("#rowList").empty();
     for (var i = 0; i < filterList.length; i++) {//data.length
-        var x =filterList[i];
-        var y = _.find(data, {sura:x.sura,aya:x.aya});
+        var x = filterList[i];
+        var y = _.find(data, {sura: x.sura, aya: x.aya});
         if (y) {
             var evenodd = i % 2 == 0 ? "even" : "odd";
             var html = '' +
-                '<div class="row ' + evenodd + '">'+
-                '<div class="col-md-10 aya_text text-right" data-toggle="tooltip" title="' + y.text + '" >' + y.text.substr(x.from,x.to) + '</div>' +
+                '<div class="row ' + evenodd + '">' +
+                '<div class="col-md-10 aya_text text-right" data-toggle="tooltip" title="' + y.text + '" >' + y.text.substr(x.from, x.to) + '</div>' +
                 '<div class="col-md-1 aya_number text-right" >' + y.aya + '</div>' +
                 '<div class="col-md-1 sura_text text-right">' + surat[y.sura] + '</div>' +
                 '</div>';
@@ -103,7 +133,6 @@ function filterBy(filterList) {
         }
     }
 }
-
 
 
 var surat = ["",
