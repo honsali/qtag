@@ -2,7 +2,8 @@
 <head>
     <title>Qtag</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
     <link href="https://fonts.googleapis.com/earlyaccess/notokufiarabic.css" rel="stylesheet">
@@ -12,15 +13,25 @@
 </head>
 <body dir="rtl">
 
-<div class="container"  id="rowList" >
-
+<div class="container" id="filterBar">
+    <div class="row">
+        <div class="col-md-11"></div>
+        <div class="col-md-1  filter-cell">
+            <select id="filter" >
+                <option value="0"></option>
+                <option value="1">أوامر</option>
+                <option value="2">حكم</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="container" id="rowList">
 
 
 </div>
 
 
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="data.js"></script>
 <script type="text/javascript" src="app.js"></script>

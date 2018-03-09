@@ -2,30 +2,63 @@
 
 
 $(document).ready(function () {
+    none();
 
-    for (var i = 0; i < data.length; i++) {
+    $("#filter").on("change", filter);
+
+});
+
+function filter() {
+    var val = $("#filter").val();
+    switch (val) {
+        case "1":
+            filterBy(awamerList);
+            break;
+        case "2":
+            filterBy(hikamList);
+            break;
+        default:
+            none();
+    }
+
+}
+
+function none() {
+    $("#rowList").empty();
+    for (var i = 0; i < data.length; i++) {//
         var evenodd = i % 2 == 0 ? "even" : "odd";
-        var html ='<div class="row ' + evenodd + '"><div class="col-md-10 aya_text text-right" >';
-
-        var tt = data[i].text.split(" ");
-        for (var j = 0; j < tt.length; j++) {
-            html = html+ '<div class="aya_word" onclick="word(\''+i+'_'+j+'\')">'+tt[j]+'</div>';
-        }
-        html = html+'</div>' +
+        var html = '' +
+            '<div class="row ' + evenodd + '">'+
+            '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
             '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
             '<div class="col-md-1 sura_text text-right">' + surat[data[i].sura] + '</div>' +
             '</div>';
         $("#rowList").append(html);
     }
-    $('document').click(function () {
-        console.log($(this).id);
-    });
-
-
-});
-function word(a){
-    console.log(a);
 }
+
+
+function filterBy(filterList) {
+    $("#rowList").empty();
+    for (var i = 0; i < filterList.length; i++) {//data.length
+        var x =filterList[i];
+        var y = _.find(data, {sura:x.sura,aya:x.aya});
+        if (y) {
+            var evenodd = i % 2 == 0 ? "even" : "odd";
+            var html = '' +
+                '<div class="row ' + evenodd + '">'+
+                '<div class="col-md-10 aya_text text-right" data-toggle="tooltip" title="' + y.text + '" >' + y.text.substr(x.from,x.to) + '</div>' +
+                '<div class="col-md-1 aya_number text-right" >' + y.aya + '</div>' +
+                '<div class="col-md-1 sura_text text-right">' + surat[y.sura] + '</div>' +
+                '</div>';
+            $("#rowList").append(html);
+        }
+    }
+}
+
+var awamerList = [{sura: 49 ,aya: 12, from: 20, to: 21}, {sura: 49 ,aya: 12, from: 59, to: 10}];
+
+var hikamList = [{sura: 27 ,aya: 19, from: 0, to: 11} ];
 
 var surat = ["",
     "الفاتحة", "البقرة", "آل عمران", "النساء", "المآئدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طـه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الإنفطار", "المطففين", "الإنشقاق", "البرج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البيِّنة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"];
