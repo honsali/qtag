@@ -1,0 +1,9 @@
+
+
+.aya_text{font-size: 16px;font-family: "Amiri";padding:10px 0 5px 0}
+.aya_word{font-size: 16px;font-family: "Amiri";padding:0 3px ;display: inline-block}
+.aya_number{font-size: 16px;font-family: "Droid Arabic Kufi";padding:10px 0 5px 0}
+.sura_text{font-size: 12px;font-family: "Droid Arabic Kufi";padding:10px 0 5px 0}
+
+.even{background-color: #EEEEEE}
+.odd{background-color: #F9F9F9}
