@@ -2,8 +2,8 @@
 
 
 $(document).ready(function () {
-    //none();
-    filterBy(awamerList);
+    none(); //default choice
+    //filterBy(awamerList);
     $("#filterList").on("change", filterChanged);
     $("#suraList").on("change", suraSelected);
     $("#query").on("change", queryChanged);
@@ -17,6 +17,7 @@ $(document).ready(function () {
 
 function filterChanged() {
     $("#suraList").hide();
+    $("#query").hide();
     var val = $("#filterList").val();
     switch (val) {
         case "1":
@@ -68,10 +69,11 @@ function all() {
             '<div class="row ' + evenodd + '">' +
             '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
             '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
-            '<div class="col-md-1 sura_text text-right">' + data[i].sura+" "+ surat[data[i].sura] + '</div>' +
+            '<div class="col-md-1 sura_text text-right" suraId="'+data[i].sura +'">' + surat[data[i].sura]+ '</div>' +
             '</div>';
         $("#rowList").append(html);
     }
+    $(".aya_text").mouseup(getSelectionText);
 }
 
 function none() {
@@ -89,11 +91,12 @@ function suraSelected() {
                 '<div class="row ' + evenodd + '">' +
                 '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
                 '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
-                '<div class="col-md-1 sura_text text-right">' + surat[data[i].sura] + '</div>' +
+                '<div class="col-md-1 sura_text text-right" suraId="'+data[i].sura +'">' + surat[data[i].sura] + '</div>' +
                 '</div>';
             $("#rowList").append(html);
         }
     }
+    $(".aya_text").mouseup(getSelectionText);
 }
 
 function queryChanged() {
@@ -107,7 +110,7 @@ function queryChanged() {
                     '<div class="row ' + evenodd + '">' +
                     '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
                     '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
-                    '<div class="col-md-1 sura_text text-right">' + data[i].sura+ '</div>' +
+                    '<div class="col-md-1 sura_text text-right" suraId="'+data[i].sura +'">' + surat[data[i].sura]+ '</div>' +
                     '</div>';
                 $("#rowList").append(html);
             }
@@ -130,11 +133,12 @@ function filterBy(filterList) {
                 '<div class="row ' + evenodd + '">' +
                 '<div class="col-md-10 aya_text text-right" data-toggle="tooltip" title="' + y.text + '" >' + y.text.substr(x.from, x.to) + '</div>' +
                 '<div class="col-md-1 aya_number text-right" >' + y.aya + '</div>' +
-                '<div class="col-md-1 sura_text text-right">' + surat[y.sura] + '</div>' +
+                '<div class="col-md-1 sura_text text-right" suraId="'+y.sura +'">' +  surat[y.sura] + '</div>' +
                 '</div>';
             $("#rowList").append(html);
         }
     }
+    $(".aya_text").mouseup(getSelectionText);
 }
 
 function getSelectionText() {
@@ -145,7 +149,7 @@ function getSelectionText() {
         text = document.selection.createRange().text;
     }  
  var all = $( this ).text();
-var nn = $( this ).next().next().text();
+var nn = $( this ).next().next().attr("suraId");
 var n = $( this ).next().text();
 var i = all.indexOf(text);
 console.log("{sura:"+nn+", aya:"+n+", from:"+i+",to:"+text.length+"},");
