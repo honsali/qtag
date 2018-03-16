@@ -2,14 +2,16 @@
 
 
 $(document).ready(function () {
-    none();
-    //filterBy(awamerList);
+    //none();
+    filterBy(awamerList);
     $("#filterList").on("change", filterChanged);
     $("#suraList").on("change", suraSelected);
     $("#query").on("change", queryChanged);
     initSuraList();
     $("#suraList").hide();
     $("#query").hide();
+
+    $(".aya_text").mouseup(getSelectionText);
 
 });
 
@@ -38,7 +40,6 @@ function filterChanged() {
         default:
             none();
     }
-
 }
 
 function showSuraList() {
@@ -67,7 +68,7 @@ function all() {
             '<div class="row ' + evenodd + '">' +
             '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
             '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
-            '<div class="col-md-1 sura_text text-right">' + surat[data[i].sura] + '</div>' +
+            '<div class="col-md-1 sura_text text-right">' + data[i].sura+" "+ surat[data[i].sura] + '</div>' +
             '</div>';
         $("#rowList").append(html);
     }
@@ -106,7 +107,7 @@ function queryChanged() {
                     '<div class="row ' + evenodd + '">' +
                     '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
                     '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
-                    '<div class="col-md-1 sura_text text-right">' + surat[data[i].sura] + '</div>' +
+                    '<div class="col-md-1 sura_text text-right">' + data[i].sura+ '</div>' +
                     '</div>';
                 $("#rowList").append(html);
             }
@@ -114,6 +115,8 @@ function queryChanged() {
     }else if(!q || q===''){
         $("#rowList").empty();
     }
+
+    $(".aya_text").mouseup(getSelectionText);
 }
 
 function filterBy(filterList) {
@@ -133,6 +136,21 @@ function filterBy(filterList) {
         }
     }
 }
+
+function getSelectionText() {
+    var text = "";
+    if (window.getSelection) {
+        text = window.getSelection().toString();
+    } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text;
+    }  
+ var all = $( this ).text();
+var nn = $( this ).next().next().text();
+var n = $( this ).next().text();
+var i = all.indexOf(text);
+console.log("{sura:"+nn+", aya:"+n+", from:"+i+",to:"+text.length+"},");
+}
+
 
 
 var surat = ["",
