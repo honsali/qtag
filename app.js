@@ -2,8 +2,12 @@
 
 
 $(document).ready(function () {
-    none(); //default choice
-    //filterBy(awamerList);
+   //count();
+
+   // none(); //default choice
+    for (var i = 0; i < allFilters.length; i++) {//
+        $("#filterList").append('<option value="' + (i+4) + '">' + allFilters[i].name + '</option');
+    }
     $("#filterList").on("change", filterChanged);
     $("#suraList").on("change", suraSelected);
     $("#query").on("change", queryChanged);
@@ -11,10 +15,28 @@ $(document).ready(function () {
     $("#suraList").hide();
     $("#query").hide();
 
+
+
     $(".aya_text").mouseup(getSelectionText);
+   // filterBy(allFilters[0].data);
 
 });
 
+function count(){
+    var allChar = 0;
+    var selectedChar=0;
+
+    for (var i = 0; i < allFilters.length; i++) {
+        for (var j = 0; j < allFilters[i].data.length; j++) {
+            selectedChar = selectedChar +allFilters[i].data[j].to;
+        }
+    }
+    for (var i = 0; i < data.length; i++) {
+        allChar = allChar +data[i].text.length;
+    }
+
+    console.log(selectedChar * 100 / allChar);
+}
 function filterChanged() {
     $("#suraList").hide();
     $("#query").hide();
@@ -29,17 +51,8 @@ function filterChanged() {
         case "3":
             showQuery();
             break;
-        case "4":
-            filterBy(awamerList);
-            break;
-        case "5":
-            filterBy(hikamList);
-            break;
-        case "6":
-            filterBy(asmaaList);
-            break;
         default:
-            none();
+            filterBy(allFilters[val - 4].data);
     }
 }
 
@@ -69,7 +82,7 @@ function all() {
             '<div class="row ' + evenodd + '">' +
             '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
             '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
-            '<div class="col-md-1 sura_text text-right" suraId="'+data[i].sura +'">' + surat[data[i].sura]+ '</div>' +
+            '<div class="col-md-1 sura_text text-right" suraId="' + data[i].sura + '">' + surat[data[i].sura] + '</div>' +
             '</div>';
         $("#rowList").append(html);
     }
@@ -91,7 +104,7 @@ function suraSelected() {
                 '<div class="row ' + evenodd + '">' +
                 '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
                 '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
-                '<div class="col-md-1 sura_text text-right" suraId="'+data[i].sura +'">' + surat[data[i].sura] + '</div>' +
+                '<div class="col-md-1 sura_text text-right" suraId="' + data[i].sura + '">' + surat[data[i].sura] + '</div>' +
                 '</div>';
             $("#rowList").append(html);
         }
@@ -101,21 +114,21 @@ function suraSelected() {
 
 function queryChanged() {
     var q = $("#query").val();
-    if (q && q.length > 3) {
+    if (q && q.length > 2) {
         $("#rowList").empty();
         for (var i = 0; i < data.length; i++) {
-            if (data[i].text.indexOf(q)>-1) {
+            if (data[i].text.indexOf(q) > -1) {
                 var evenodd = i % 2 == 0 ? "even" : "odd";
                 var html = '' +
                     '<div class="row ' + evenodd + '">' +
                     '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
                     '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
-                    '<div class="col-md-1 sura_text text-right" suraId="'+data[i].sura +'">' + surat[data[i].sura]+ '</div>' +
+                    '<div class="col-md-1 sura_text text-right" suraId="' + data[i].sura + '">' + surat[data[i].sura] + '</div>' +
                     '</div>';
                 $("#rowList").append(html);
             }
         }
-    }else if(!q || q===''){
+    } else if (!q || q === '') {
         $("#rowList").empty();
     }
 
@@ -133,7 +146,7 @@ function filterBy(filterList) {
                 '<div class="row ' + evenodd + '">' +
                 '<div class="col-md-10 aya_text text-right" data-toggle="tooltip" title="' + y.text + '" >' + y.text.substr(x.from, x.to) + '</div>' +
                 '<div class="col-md-1 aya_number text-right" >' + y.aya + '</div>' +
-                '<div class="col-md-1 sura_text text-right" suraId="'+y.sura +'">' +  surat[y.sura] + '</div>' +
+                '<div class="col-md-1 sura_text text-right" suraId="' + y.sura + '">' + surat[y.sura] + '</div>' +
                 '</div>';
             $("#rowList").append(html);
         }
@@ -147,14 +160,13 @@ function getSelectionText() {
         text = window.getSelection().toString();
     } else if (document.selection && document.selection.type != "Control") {
         text = document.selection.createRange().text;
-    }  
- var all = $( this ).text();
-var nn = $( this ).next().next().attr("suraId");
-var n = $( this ).next().text();
-var i = all.indexOf(text);
-console.log("{sura:"+nn+", aya:"+n+", from:"+i+",to:"+text.length+"},");
+    }
+    var all = $(this).text();
+    var nn = $(this).next().next().attr("suraId");
+    var n = $(this).next().text();
+    var i = all.indexOf(text);
+    console.log("{sura:"+nn+", aya:"+n+", from:"+i+",to:"+text.length+"},");
 }
-
 
 
 var surat = ["",
