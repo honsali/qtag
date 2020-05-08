@@ -1,6 +1,42 @@
 var awamerList = {name: "أوامر"}
+awamerList.ename = "awamer";
 allFilters.push(awamerList);
+allTags.push(awamerList);
+awamerList.data =
+	[{
+        "sura": 1,
+        "aya": 1,
+        "from": 0,
+        "to": 22,
+        "fullAya": 1,
+        "id": "1.1.0.22",
+        "tag": "awamer"
+    }, {
+        "sura": 1,
+        "aya": 2,
+        "from": 1,
+        "to": 20,
+        "id": "1.2.1.20",
+        "tag": "awamer"
+    }, {
+        "sura": 1,
+        "aya": 3,
+        "from": 0,
+        "to": 6,
+        "id": "1.3.0.6",
+        "tag": "hikam"
+    }, {
+        "sura": 1,
+        "aya": 4,
+        "from": 0,
+        "to": 14,
+        "fullAya": 1,
+        "id": "1.4.0.14",
+        "tag": "awamer"
+    }
+]
 
+/*
 awamerList.data = [
 {sura:17, aya:33, from:1,to:39},
 {sura:6, aya:152, from:1,to:38},
@@ -37,3 +73,4 @@ awamerList.data = [
 {sura:30, aya:31, from:39,to:5},
 {sura:9, aya:119, from:32,to:17}
 ];
+*/

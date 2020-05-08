@@ -1,5 +1,7 @@
 var asmaaList ={name:"أسماء الله"}
+asmaaList.ename = "asmaaa";
 //allFilters.push(asmaaList);
+allTags.push(asmaaList);
 
 asmaaList.data  = [
 

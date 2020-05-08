@@ -2,6 +2,11 @@
 body{overflow-y: scroll;}
 
 .aya_text{font-size: 16px;font-family: "Amiri";padding:10px 0 5px 0}
+
+.aya_text:hover{
+	font-size: 24px;
+	padding: 10px;
+}
 .aya_word{font-size: 16px;font-family: "Amiri";padding:0 3px ;display: inline-block}
 .aya_number{font-size: 16px;font-family: "Noto Kufi Arabic";padding:10px 5px 5px 0}
 .sura_text{font-size: 12px;font-family: "Noto Kufi Arabic";padding:10px 5px 5px 0}
@@ -11,3 +16,9 @@ body{overflow-y: scroll;}
 
 .filter-cell > select {font-size: 12px;font-family: "Noto Kufi Arabic";padding:2px}
 .filter-cell{padding:10px 0 5px 0}
+
+button{ padding: 4px; margin: 10px 0; font-size: 12px; font-family: "Noto Kufi Arabic";}
+select.tagList{ padding: 2px; margin: 5px 0px; font-size: 11px; font-family: "Noto Kufi Arabic";}
+.tagElement span{ padding: 5px 10px; font-size: 12px; font-family: "Noto Kufi Arabic";}
+
+.work-ctr *{ font-family: "Noto Kufi Arabic"; }

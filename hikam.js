@@ -1,5 +1,7 @@
 var hikamList = {name: "حكم"}
-//allFilters.push(hikamList);
+hikamList.ename = "hikam";
+allFilters.push(hikamList);
+allTags.push(hikamList);
 
 hikamList.data = [
     {sura: 2, aya: 32, from: 0, to: 59},

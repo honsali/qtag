@@ -1,4 +1,6 @@
 var allFilters = [];
+var allTags = [];
+
 var data = [
     {sura:1,aya:1,text:"بسم الله الرحمن الرحيم"},
     {sura:1,aya:2,text:"الحمد لله رب العالمين"},

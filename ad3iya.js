@@ -1,5 +1,7 @@
 var ad3iyaList = {name: "أدعية"}
+ad3iyaList.ename = "ad3iya";
 //allFilters.push(ad3iyaList);
+allTags.push(ad3iyaList);
 
 ad3iyaList.data = [
     {sura:2, aya:127, from:43,to:35},
