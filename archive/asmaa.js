@@ -34,8 +34,6 @@ asmaaList.data  = [
     {sura:35, aya:44, from:129,to:20},
     {sura:71, aya:10, from:18,to:14},
     {sura:110, aya:3, from:22,to:14},
-
-
     {sura:2, aya:20, from:103,to:23},
 {sura:2, aya:109, from:132,to:23},
 {sura:2, aya:110, from:69,to:23},
@@ -142,9 +140,6 @@ asmaaList.data  = [
 {sura:65, aya:3, from:51,to:17},
 {sura:73, aya:20, from:388,to:18},
 {sura:76, aya:30, from:27,to:24},
-
-
-
     {sura:9, aya:104, from:57,to:25},
 {sura:22, aya:6, from:0,to:20},
 {sura:22, aya:6, from:37,to:21},

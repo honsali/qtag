@@ -1,10 +1,28 @@
 # qtag
 
- * new features in 0.1:
-	 * done: new column to view/edit selection
-	 * done: new menu to save & download tagged selection
-	 * done: localStorage options to save selection
-	 * todo: highlight with color
-	 * done: increase font-size when hovering
- * enhancements to previous version (0.99 ? )
- * clear rows on selecting no surah
+== backlog ==
+	* [M] ui-xp: show/hide saved work
+	* [M] ui-xp: list of tags to filter instead of select
+	* [M] ui-xp: highlight 
+	* [S] sharing: load another qtag.json file
+	* [M] bugfixing
+	* [S] truncate with ... long tag text
+
+== new in 0.2 == 
+	* [M] show status header: number of active tags, last saved to storage, number of total tags
+	* [S] ui-xp: when tag is selected, change select to span
+	* [L] use custom tags
+		* create a new tag, enter name & ename
+		* append new tag to qtag select
+		* append new tag to main select
+	* [M] storing: use a single qtag.json file as opposed to one file per tag
+		* loading a single file of tags: qtag.json
+		* filterBy updated to search within a single file 
+	* [M] bugfixing
+		* download doesn't re-export the qtag object's tagList
+==  new in 0.1 == 
+	 *  new column to view/edit selection
+	 *  new menu to save & download tagged selection
+	 *  localStorage options to save selection 
+	 *  increase font-size when hovering
+	 *  clear rows on selecting no surah

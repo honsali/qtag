@@ -47,5 +47,5 @@ ad3iyaList.data = [
 {sura:2, aya:156, from:30,to:24},
 {sura:4, aya:46, from:123,to:27},
 {sura:5, aya:109, from:43,to:30},
-{sura:5, aya:111, from:50,to:23},
+{sura:5, aya:111, from:50,to:23}
 ];
