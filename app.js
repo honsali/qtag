@@ -2,15 +2,18 @@
 
 
 $(document).ready(function () {
-	initialize(ui_init); 
+	load(init_UI); 
 });
+//window.addEventListener('DOMContentLoaded', function() {
+//	load(init_UI); 
+//});
 
 var workspace = [];
 var qtag = {};
 var stats = {};
 stats.file=0; stats.local=0; stats.draft=0;
 
-function initialize(callBack_){
+function load(callBack_){
     
 	if (storageAvailable('localStorage')) {
 		workspace = JSON.parse( read("qtag") );
@@ -36,7 +39,7 @@ function initialize(callBack_){
     updateStats();
 }
 
-function ui_init(){ 
+function init_UI(){ 
 	   //count();
 	   // none(); //default choice
 	   // for (var i = 0; i < allFilters.length; i++) {//
@@ -82,6 +85,7 @@ function filterChanged() {
 
 function showSuraList() {
     $("#suraList").show();
+	$("#stats").innerHTML = data.length;
 
 }
 
@@ -106,17 +110,24 @@ function initFilters(){
 function i2ename(i){
 	return qtag.tagList[i].ename;
 }
+
+//data_ has aya/sura/text
 function generateRow(data_, evenodd){
     var html = '' +
 			    '<div class="row ' + evenodd + '">' +
-			    '<div class="col-md-4 tag_space text-right">' + '' + '</div>' +
+			    '<div class="col-md-4 tag_space text-right">' + genSavedAyaTags(data_) + '</div>' +
 			    '<div class="col-md-6 aya_text text-right" >' + data_.text + '</div>' +
 			    '<div class="col-xs-1 aya_number text-right" >' + data_.aya + '</div>' +
 			    '<div class="col-md-1 sura_text text-right" suraId="' + data_.sura + '">' + surat[data_.sura] + '</div>' +
 			    '</div>';
     return html;
 }
-
+function genSavedAyaTags(data_){
+	
+	console.log("genSavedAyaTags");
+	console.log(data_);
+	return "";
+}
 function all() {
     $("#rowList").empty();
     for (var i = 0; i < data.length; i++) {//
@@ -144,14 +155,20 @@ function suraSelected() {
         }
     }
     $(".aya_text").mouseup(getSelectionText);
+    console.log(suraId);
+    var count = (suraId==114)? (data.length - firstAyat[suraId] + 1) : (firstAyat[suraId+1] - firstAyat[suraId] );;
+    console.log(count);
+	$("#stats").innerHTML = count;
 }
 
 function queryChanged() {
+	var count = 0;
     var q = $("#query").val();
     if (q && q.length > 2) {
         $("#rowList").empty();
         for (var i = 0; i < data.length; i++) {
             if (data[i].text.indexOf(q) > -1) {
+            	count++;
                 var evenodd = i % 2 == 0 ? "even" : "odd";
                 var html = generateRow(data[i], evenodd);
                 $("#rowList").append(html);
@@ -162,6 +179,8 @@ function queryChanged() {
     }
 
     $(".aya_text").mouseup(getSelectionText);
+
+	$("#stats").innerHTML = count;
 }
 
 /*function filterBy(filterList) {
@@ -184,6 +203,7 @@ function queryChanged() {
 //since v0.2
 function filterBy(tag, dataList) {
     console.log("filterBy: "+tag); 
+	var count = 0;
     $("#rowList").empty();
     //first get the subset of the qtag.json by tag 
     var tagDataList = _.filter(dataList, function(myObject){
@@ -196,12 +216,15 @@ function filterBy(tag, dataList) {
         var y = _.find(data, {sura: x.sura, aya: x.aya});
         console.log(y);
         if (y) {
+        	count++;
             var evenodd = i % 2 == 0 ? "even" : "odd";
+            //@TODO: make sure this new 'x' doesn't break code
             var html = generateRow(y, evenodd); 
             $("#rowList").append(html);
         }
     }
     $(".aya_text").mouseup(getSelectionText);
+	$("#stats").innerHTML = count;
 }
 
 function getSelectionText(e) {
@@ -259,6 +282,9 @@ function download(){
 	executeDownload(qtag, "qtag.json");
 }
 
+function showtags(){
+	
+}
 
 /**
  *************************************************************************************		deprecated

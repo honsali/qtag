@@ -1,6 +1,7 @@
 <html>
 <head>
-    <title>Qtag</title>
+
+    <title>Qtag 0.5</title>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -19,6 +20,7 @@
         	<span id="save-time"></span> 
         	<button id="save-work" onclick="save()"> حفظ  </button>
         	<button id="download" onclick="download()"> تنزيل </button>
+        	<button id="show-tags" onclick="showtags()"> كشف </button>
         </div>
         <div class="col-md-3">
         	
@@ -66,16 +68,19 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="data.js"   type="text/javascript"></script> 
 <!-- 
 <script src="awamer.js" type="text/javascript"></script>
 <script src="hikam.js"  type="text/javascript"></script>
 <script src="asmaa.js"  type="text/javascript"></script>
 <script src="ad3iya.js"  type="text/javascript"></script>
  -->
-<script src="app.js"    type="text/javascript"></script>
-<script src="utils.js"    type="text/javascript"></script>
+<script src="data.js"   type="text/javascript"></script> 
+<script src="app.js"    	type="text/javascript"></script>
+<script src="utils.js"    	type="text/javascript"></script>
 
+<script type="text/javascript">
+	print_get();
+</script>
 
 </body>
 </html>

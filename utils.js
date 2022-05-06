@@ -8,7 +8,6 @@
 	 * does the tool allow you to save your work? yes
 	 * do you come up with tags on the fly or you have to configure + reload the app? can be added on the fly, but not in v1.0, rather v2.0 or before
  */
-
  
 function updateStats(){
 	console.log('updating stats');
@@ -67,7 +66,7 @@ function generateTagSelect(){
 	option.value = "";
 	tagListSelect.appendChild(option); 
 	
-	for(var i =0; i<qtag.tagList.length; i++){
+	for(var i =0; i < qtag.tagList.length; i++){
 		var option = document.createElement("option");
 		option.innerHTML = qtag.tagList[i].name;
 		option.value = qtag.tagList[i].ename;
@@ -179,3 +178,22 @@ const loadJSON = (callback) => {
     xobj.send(null);
 }
  
+
+var _GET = (function() {
+	var _get = {};
+	var re = /[?&]([^=&]+)(=?)([^&]*)/g;
+	while (m = re.exec(location.search)){ 
+		_get[decodeURIComponent(m[1])] = (m[2] == '=' ? decodeURIComponent(m[3]) : true);
+	}
+	return _get;
+})();
+
+function print_get(){
+	console.log("printing GET params");
+	console.log(_GET);
+//	var str = "";
+//	for(items in _GET){
+//		str = " " + items + " = " + _GET[items] + " ; ";
+//		console.log( str ); 
+//	}
+}
