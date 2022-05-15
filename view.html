@@ -12,30 +12,13 @@
 
 </head>
 <body> 
-	<div  id="results">
+	<div  id="viewer" style="text-align:center; font-size: 2em; padding: 20px; ">
 	</div>
-	
-<a href=”https://api.whatsapp.com/send?phone=&text=TEST” target="_blank">share whatsapp 1</a>
-<a href=”https://wa.me/?text=I\\'m%20inquiring%20about%20the%20apartment%20listing” target="_blank">share whatsapp 2</a>
-<a href="mailto:nowhere@mozilla.org?cc=name2@rapidtables.com&bcc=name3@rapidtables.com&subject=The%20subject%20of%20the%20email&body=The%20body%20of%20the%20email">email share</a>
-
-<a href="#" id="share"> generic share </a>
-<hr />
-<div class="a2a_kit a2a_kit_size_32 a2a_floating_style a2a_default_style" style="bottom:0px; right:0px;">
-    <a class="a2a_button_facebook"></a>
-    <a class="a2a_button_twitter"></a>
-    <a class="a2a_button_pinterest"></a>
-    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-</div>
-
-<script async src="https://static.addtoany.com/menu/page.js"></script>
-<br/>
-	
 </body>
 </html>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<script src="data.js"   type="text/javascript"></script>  
+<script src="_data/data0.js"   type="text/javascript"></script>  
 <script src="utils.js"    	type="text/javascript"></script>
 
 
@@ -55,6 +38,8 @@ if ( navigator.share ) {
 
   });
 
+}else{
+	console.log("navigator.share not supported");
 }
 
 	var c = _GET["c"]
@@ -65,7 +50,12 @@ if ( navigator.share ) {
 	if(c === undefined && v === undefined){
 		console.log('nothing defined');
 	}else if(v === undefined){				//case of no verse , only chapter
-		console.log('v undefined'); 
+		c = parseInt(c);   
+		var end = firstAyat[c+1] - firstAyat[c];
+		for(var i=1; i < end+1; i++){
+			vList.push(i);
+		}
+		console.log(vList);
 	}else if(v.indexOf('-') > 0){				//case of sequence of verses
 		var start = v.split('-')[0];
 		var end = v.split('-')[1];
@@ -82,19 +72,21 @@ if ( navigator.share ) {
 		console.log(_GET);
 	} 
  
-	var result;
+	var result, result_en;
 	for(var i=0; i < vList.length; i++){ 					//for each verse in the req, fetch it
 		console.log(c);
 		console.log(vList[i]);
 		result = _.find(data, {sura: Number(c), aya: Number(vList[i])});
+		result_en = _.find(data_en, {sura: Number(c), aya: Number(vList[i])});
 		console.log(result);
+		console.log(result_en);
 		if(result === undefined)
 			console.log('no result found for ' + vList[i]);
 		else{ 
 			div_result = document.createElement("div");
-			div_result.innerHTML = result.text;
-			div_result.classList = "rtl";
-			document.querySelector("body").append(div_result);
+			div_result.innerHTML = result.text + "<br /> " + result_en.text;
+// 			div_result.classList = "rtl";
+			document.querySelector("#viewer").append(div_result);
 		}
 	}
 	
