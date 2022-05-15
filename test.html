@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<HEAD>
+	<TITLE>QTAG TESTER</TITLE>
+</HEAD>
+<BODY>
+
+</BODY>
+</HTML>
+
+<script type="text/javascript">
+
+var data = loadData('./data/quran-simple.clean.txt'); 
+
+function loadData(_source){
+	var result = [];
+	fetch(_source)
+		.then(response => function(data){
+			console.log("FETCH RESULT");
+			console.log(data);
+		})
+}
+</script>
