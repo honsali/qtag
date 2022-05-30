@@ -9,7 +9,8 @@
     <link href="https://fonts.googleapis.com/earlyaccess/notokufiarabic.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Amiri" rel="stylesheet">
     <link rel="stylesheet" href="style.css"/>
-
+	<script type="text/javascript" src="canvas2image.js"></script>
+	<script type="text/javascript" src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body> 
 	<script type="text/javascript">new Image().src='https://nullitics.com/n.gif?u=' + encodeURI(location.href) + '&r=' + encodeURI(document.referrer) + '&d=' + screen.width;</script>
@@ -25,26 +26,27 @@
 
 <script type="text/javascript">
 //is Web Share API supported?
-if ( navigator.share ) {
+// if ( navigator.share ) {
 
-  // share button click handler
-  document.getElementById('share').addEventListener('click', () => {
+//   // share button click handler
+//   document.getElementById('share').addEventListener('click', () => {
 
-    // share page information
-    navigator.share({
-      url: 'https://example.com/',
-      title: 'My example page',
-      text: 'An example page implementing the Web Share API.'
-    });
+//     // share page information
+//     navigator.share({
+//       url: 'https://example.com/',
+//       title: 'My example page',
+//       text: 'An example page implementing the Web Share API.'
+//     });
 
-  });
+//   });
 
-}else{
-	console.log("navigator.share not supported");
-}
+// }else{
+// 	console.log("navigator.share not supported");
+// }
 
 	var c = _GET["c"]
 	var v = _GET["v"];
+	
 	console.log(v);
 	var vList = []; 
 	console.log(_GET);
@@ -90,5 +92,4 @@ if ( navigator.share ) {
 			document.querySelector("#viewer").append(div_result);
 		}
 	}
-	
 </script>
