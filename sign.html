@@ -17,6 +17,7 @@
 	<div  id="viewer" style="text-align:center; font-size: 2em; padding: 20px; ">
 	</div>
 	<canvas id="mycanvas"></canvas>
+	<img alt="quran signature" id="qr1n_sign" />
 </body>
 </html>
 
@@ -49,9 +50,10 @@
 
 	html2canvas(document.querySelector("#viewer div")).then(canvas => {
 		document.querySelector("#viewer").style.display ="none";
-	    document.body.appendChild(canvas)
+	   // document.body.appendChild(canvas)
 	    var dataUrl = canvas.toDataURL('image/jpeg', 1.0);
 	    console.log(dataUrl);
+	    document.getElementById("qr1n_sign").src = dataUrl;
 	});
 
 
