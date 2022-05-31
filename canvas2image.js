@@ -2,10 +2,10 @@
  * covert canvas to image
  * and save the image file
  */
-const Canvas2Image = (function () {
+const Canvas2Image = (function (canva_ = "null") {
     // check if support sth.
-    const $support = (function () {
-        const canvas = document.createElement("canvas"),
+    const $support = (function (canva_) {
+        const canvas = (typeof canva_ == "string")?document.createElement("canvas"): canva_,
             ctx = canvas.getContext("2d");
 
         return {
