@@ -1,31 +1,46 @@
-
-body{overflow-y: scroll;}
-
-.aya_text{font-size: 16px;font-family: "Amiri";padding:10px 0 5px 0}
-
-.aya_text:hover{
-	font-size: 24px;
-	padding: 10px;
+body {
+	overflow-y: scroll;
 }
-.aya_word{font-size: 16px;font-family: "Amiri";padding:0 3px ;display: inline-block}
-.aya_number{font-size: 16px;font-family: "Noto Kufi Arabic";padding:10px 5px 5px 0}
-.sura_text{font-size: 12px;font-family: "Noto Kufi Arabic";padding:10px 5px 5px 0}
 
-.even{background-color: #EEEEEE}
-.odd{background-color: #F9F9F9}
+.aya_text {
+	font-size: 16px;
+	font-family: "Amiri";
+	padding: 10px 0 5px 0
+}
 
-.filter-cell > select {font-size: 12px;font-family: "Noto Kufi Arabic";padding:2px}
-.filter-cell{padding:10px 0 5px 0}
+.aya_word {
+	font-size: 16px;
+	font-family: "Amiri";
+	padding: 0 3px;
+	display: inline-block
+}
 
-button{ padding: 4px; margin: 10px 0; font-size: 12px; font-family: "Noto Kufi Arabic";}
-select.tagList{ padding: 2px; margin: 5px 0px; font-size: 11px; font-family: "Noto Kufi Arabic";}
+.aya_number {
+	font-size: 16px;
+	font-family: "Noto Kufi Arabic";
+	padding: 10px 5px 5px 0
+}
 
-.work-ctr *{ font-family: "Noto Kufi Arabic"; }
+.sura_text {
+	font-size: 12px;
+	font-family: "Noto Kufi Arabic";
+	padding: 10px 5px 5px 0
+}
 
-.tagElement span{ padding: 2px 10px; font-size: 12px; font-family: "Noto Kufi Arabic";}
-.tagElement span.tag { border: 1px solid grey; margin: 2px;}
-.tagElement button{ border: none; margin: 2px;}
-.tagElement button:hover {border: 1px solid;}
+.even {
+	background-color: #EEEEEE
+}
 
-.stats-cell{font-size: 14px;font-family: "Noto Kufi Arabic";padding:10px 5px 5px 0 }
-#stats { font-size: 150%}
+.odd {
+	background-color: #F9F9F9
+}
+
+.filter-cell>select {
+	font-size: 12px;
+	font-family: "Noto Kufi Arabic";
+	padding: 2px
+}
+
+.filter-cell {
+	padding: 10px 0 5px 0
+}

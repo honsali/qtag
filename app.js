@@ -2,68 +2,33 @@
 
 
 $(document).ready(function () {
-	load(init_UI); 
+
+    $("#filterList").on("change", filterChanged);
+    $("#suraList").on("change", suraSelected);
+    $("#query").on("change", queryChanged);
+    initSuraList();
+    $("#suraList").hide();
+    $("#query").hide();
+
+
 });
-//window.addEventListener('DOMContentLoaded', function() {
-//	load(init_UI); 
-//});
 
-var workspace = [];
-var qtag = {};
-var stats = {};
-stats.file=0; stats.local=0; stats.draft=0;
+function count() {
+    var allChar = 0;
+    var selectedChar = 0;
 
-function load(callBack_){
-    
-	if (storageAvailable('localStorage')) {
-		workspace = JSON.parse( read("qtag") );
-		console.log("loaded localStorage qtag successfully")
-		if(workspace === "undefined" || workspace == null || workspace === "null")
-			workspace = [];
-		console.debug(workspace);
-		stats.local = workspace.length;
-		
-	}else
-		alert('some functionality missing, local storage not available');
-	//loads the local file
-    loadJSON((response) => {
-        // Parse JSON string into object
-        qtag = JSON.parse(response);
-        stats.file = qtag.data.length;
-        console.log("loaded qtag.json successfully");
-        console.log(qtag);
-        console.log(qtag.tagList);
-        callBack_();
-    });
-    
-    updateStats();
+    for (var i = 0; i < allFilters.length; i++) {
+        for (var j = 0; j < allFilters[i].data.length; j++) {
+            selectedChar = selectedChar + allFilters[i].data[j].to;
+        }
+    }
+    for (var i = 0; i < data.length; i++) {
+        allChar = allChar + data[i].text.length;
+    }
+
+    console.log(selectedChar * 100 / allChar);
 }
-
-function init_UI(){ 
-	   //count();
-	   // none(); //default choice
-	   // for (var i = 0; i < allFilters.length; i++) {//
-		generateFilterList();
-
-	    $("#filterList").on("change", filterChanged);
-	    $("#suraList").on("change", suraSelected);
-	    $("#query").on("change", queryChanged);
-	    initSuraList();
-	    $("#suraList").hide();
-	    $("#query").hide();
-	    $(".aya_text").mouseup(getSelectionText);
-	   // filterBy(allFilters[0].data);
-}
-
-function generateFilterList(){
-	 for (var i = 0; i < qtag.tagList.length; i++) {//
-	        $("#filterList").append('<option value="' + (i+4) + '">' + qtag.tagList[i].name + '</option');
-	    }
-}
-
 function filterChanged() {
-	console.log("filter changed");
-	console.log(allFilters);
     $("#suraList").hide();
     $("#query").hide();
     var val = $("#filterList").val();
@@ -78,14 +43,12 @@ function filterChanged() {
             showQuery();
             break;
         default:
-            //filterBy(allFilters[val - 4].data);
-        	filterBy(qtag.tagList[val-4].ename, qtag.data);
+            filterBy(allFilters[val - 4].data);
     }
 }
 
 function showSuraList() {
     $("#suraList").show();
-	$("#stats").innerHTML = data.length;
 
 }
 
@@ -102,75 +65,55 @@ function initSuraList() {
     }
 }
 
-function initFilters(){
-	for(let i = 0 ; i < qtag.taglist.length; i++){
-		allFilters.push(qtag.tagList[i].name);
-	}
-}
-function i2ename(i){
-	return qtag.tagList[i].ename;
-}
-
-//data_ has aya/sura/text
-function generateRow(data_, evenodd){
-    var html = '' +
-			    '<div class="row ' + evenodd + '">' +
-			    '<div class="col-md-4 tag_space text-right">' + genSavedAyaTags(data_) + '</div>' +
-			    '<div class="col-md-6 aya_text text-right" >' + data_.text + '</div>' +
-			    '<div class="col-xs-1 aya_number text-right" >' + data_.aya + '</div>' +
-			    '<div class="col-md-1 sura_text text-right" suraId="' + data_.sura + '">' + surat[data_.sura] + '</div>' +
-			    '</div>';
-    return html;
-}
-function genSavedAyaTags(data_){
-	
-	console.log("genSavedAyaTags");
-	console.log(data_);
-	return "";
-}
 function all() {
     $("#rowList").empty();
     for (var i = 0; i < data.length; i++) {//
         var evenodd = i % 2 == 0 ? "even" : "odd";
-        var html = generateRow(data[i], evenodd);
+        var html = '' +
+            '<div class="row ' + evenodd + '">' +
+            '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
+            '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
+            '<div class="col-md-1 sura_text text-right" suraId="' + data[i].sura + '">' + surat[data[i].sura] + '</div>' +
+            '</div>';
         $("#rowList").append(html);
     }
-    $(".aya_text").mouseup(getSelectionText);
 }
 
 function none() {
     $("#rowList").empty();
-    $("#sidework").empty();
 }
 
 function suraSelected() {
-	$("#rowList").empty();
     var id = $("#suraList").val();
-    var suraId = parseInt(id); 
+    var suraId = parseInt(id);
+    $("#rowList").empty();
     for (var i = 0; i < data.length; i++) {//data.length
         if (data[i].sura === suraId) {
             var evenodd = i % 2 == 0 ? "even" : "odd";
-            var html = generateRow(data[i], evenodd);
+            var html = '' +
+                '<div class="row ' + evenodd + '">' +
+                '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
+                '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
+                '<div class="col-md-1 sura_text text-right" suraId="' + data[i].sura + '">' + surat[data[i].sura] + '</div>' +
+                '</div>';
             $("#rowList").append(html);
         }
     }
-    $(".aya_text").mouseup(getSelectionText);
-    console.log(suraId);
-    var count = (suraId==114)? (data.length - firstAyat[suraId] + 1) : (firstAyat[suraId+1] - firstAyat[suraId] );;
-    console.log(count);
-	$("#stats").innerHTML = count;
 }
 
 function queryChanged() {
-	var count = 0;
     var q = $("#query").val();
     if (q && q.length > 2) {
         $("#rowList").empty();
         for (var i = 0; i < data.length; i++) {
             if (data[i].text.indexOf(q) > -1) {
-            	count++;
                 var evenodd = i % 2 == 0 ? "even" : "odd";
-                var html = generateRow(data[i], evenodd);
+                var html = '' +
+                    '<div class="row ' + evenodd + '">' +
+                    '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
+                    '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
+                    '<div class="col-md-1 sura_text text-right" suraId="' + data[i].sura + '">' + surat[data[i].sura] + '</div>' +
+                    '</div>';
                 $("#rowList").append(html);
             }
         }
@@ -178,130 +121,29 @@ function queryChanged() {
         $("#rowList").empty();
     }
 
-    $(".aya_text").mouseup(getSelectionText);
-
-	$("#stats").innerHTML = count;
 }
 
-/*function filterBy(filterList) {
+function filterBy(filterList) {
     $("#rowList").empty();
     for (var i = 0; i < filterList.length; i++) {//data.length
         var x = filterList[i];
-        console.log(x);
-        console.log(x.sura);
-        console.log(x.aya);
-        var y = _.find(data, {sura: x.sura, aya: x.aya});
-        console.log(y);
+        var y = _.find(data, { sura: x.sura, aya: x.aya });
         if (y) {
             var evenodd = i % 2 == 0 ? "even" : "odd";
-            var html = generateRow(i, data, evenodd); 
+            var html = '' +
+                '<div class="row ' + evenodd + '">' +
+                '<div class="col-md-10 aya_text text-right" data-toggle="tooltip" title="' + y.text + '" >' + y.text.substr(x.from, x.to) + '</div>' +
+                '<div class="col-md-1 aya_number text-right" >' + y.aya + '</div>' +
+                '<div class="col-md-1 sura_text text-right" suraId="' + y.sura + '">' + surat[y.sura] + '</div>' +
+                '</div>';
             $("#rowList").append(html);
         }
     }
-    $(".aya_text").mouseup(getSelectionText);
-}*/
-//since v0.2
-function filterBy(tag, dataList) {
-    console.log("filterBy: "+tag); 
-	var count = 0;
-    $("#rowList").empty();
-    //first get the subset of the qtag.json by tag 
-    var tagDataList = _.filter(dataList, function(myObject){
-        return myObject.tag === tag;
-    });
-    console.log(tagDataList);
-    for (var i = 0; i < tagDataList.length; i++) {//data.length
-        var x = tagDataList[i]; 
-        console.log(x); 
-        var y = _.find(data, {sura: x.sura, aya: x.aya});
-        console.log(y);
-        if (y) {
-        	count++;
-            var evenodd = i % 2 == 0 ? "even" : "odd";
-            //@TODO: make sure this new 'x' doesn't break code
-            var html = generateRow(y, evenodd); 
-            $("#rowList").append(html);
-        }
-    }
-    $(".aya_text").mouseup(getSelectionText);
-	$("#stats").innerHTML = count;
-}
-
-function getSelectionText(e) {
-	//console.log(e);
-    var text = "";
-    if (window.getSelection) {
-        text = window.getSelection().toString();
-    } else if (document.selection && document.selection.type != "Control") {
-        text = document.selection.createRange().text;
-    }
-    var all = $(this).text();
-    var nn = $(this).next().next().attr("suraId");
-    var n = $(this).next().text();
-    var i = all.indexOf(text);
-    if(i == text.length){
-    	console.log( "aborted, useless selection");
-    	return null;
-	}
-    console.log("{sura:"+nn+", aya:"+n+", from:"+i+",to:"+text.length+"},"); 
-    //v1.0
-    var loci = {};
-	    loci.sura 	= parseInt(nn);
-	    loci.aya 	= parseInt(n);
-	    loci.from 	= i;
-	    loci.to 	= text.length; 
-	    if(text.length == all.length){
-	    	loci.fullAya = 1;
-	    	loci.text = "كل الأية";
-	    }else
-		    loci.text = text;
-    	//loci.id = loci.sura+"."+loci.aya+"."+loci.from+"."+loci.to;
-    
-    appendToSideWork(e.target, loci);
 }
 
 
-function save(){ 
-	write("qtag", JSON.stringify(workspace));
-	stats.draft = 0;
-	stats.local = workspace.length;
-	updateStats();
-}
 
-function download(){
-	console.log("preparing download");
-	//console.debug(workspace);
-	console.debug(qtag.data);
-//	var mem = JSON.parse( read("qtag"));
-//	console.debug(mem);
-	qtag.data = [ ...qtag.data, ...JSON.parse( read("qtag")) ];
-//	console.debug(newData);
-//	qtag.data = newData;
-	console.debug("printing output");
-	console.debug(qtag);
-	executeDownload(qtag, "qtag.json");
-}
+var surat = ["",
+    "الفاتحة", "البقرة", "آل عمران", "النساء", "المآئدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طـه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الإنفطار", "المطففين", "الإنشقاق", "البرج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البيِّنة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"];
 
-function showtags(){
-	
-}
-
-/**
- *************************************************************************************		deprecated
- */
-/*
-function count(){
-    var allChar = 0;
-    var selectedChar=0;
-
-    for (var i = 0; i < allFilters.length; i++) {
-        for (var j = 0; j < allFilters[i].data.length; j++) {
-            selectedChar = selectedChar +allFilters[i].data[j].to;
-        }
-    }
-    for (var i = 0; i < data.length; i++) {
-        allChar = allChar +data[i].text.length;
-    }
-
-    console.log(selectedChar * 100 / allChar);
-}*/
+var firstAyat = [1, 1, 8, 294, 494, 670, 790, 955, 1161, 1236, 1365, 1474, 1597, 1708, 1751, 1803, 1902, 2030, 2141, 2251, 2349, 2484, 2596, 2674, 2792, 2856, 2933, 3160, 3253, 3341, 3410, 3470, 3504, 3534, 3607, 3661, 3706, 3789, 3971, 4059, 4134, 4219, 4273, 4326, 4415, 4474, 4511, 4546, 4584, 4613, 4631, 4676, 4736, 4785, 4847, 4902, 4980, 5076, 5105, 5127, 5151, 5164, 5178, 5189, 5200, 5218, 5230, 5242, 5272, 5324, 5376, 5420, 5448, 5476, 5496, 5552, 5592, 5623, 5673, 5713, 5759, 5801, 5830, 5849, 5885, 5910, 5932, 5949, 5968, 5994, 6024, 6044, 6059, 6080, 6091, 6099, 6107, 6126, 6131, 6139, 6147, 6158, 6169, 6177, 6180, 6189, 6194, 6198, 6205, 6208, 6214, 6217, 6222, 6226, 6231];
