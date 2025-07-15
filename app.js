@@ -1,16 +1,22 @@
 "use strict";
 
+let $filterList, $suraList, $query, $rowList;
+let dataBySura = {};
 
 $(document).ready(function () {
+    $filterList = $("#filterList");
+    $suraList = $("#suraList");
+    $query = $("#query");
+    $rowList = $("#rowList");
 
-    $("#filterList").on("change", filterChanged);
-    $("#suraList").on("change", suraSelected);
-    $("#query").on("change", queryChanged);
+    $filterList.on("change", filterChanged);
+    $suraList.on("change", suraSelected);
+    $query.on("input", queryChanged);
+
     initSuraList();
-    $("#suraList").hide();
-    $("#query").hide();
-
-
+    dataBySura = _.groupBy(data, "sura");
+    $suraList.hide();
+    $query.hide();
 });
 
 function count() {
@@ -29,9 +35,9 @@ function count() {
     console.log(selectedChar * 100 / allChar);
 }
 function filterChanged() {
-    $("#suraList").hide();
-    $("#query").hide();
-    var val = $("#filterList").val();
+    $suraList.hide();
+    $query.hide();
+    var val = $filterList.val();
     switch (val) {
         case "1":
             showSuraList();
@@ -48,97 +54,88 @@ function filterChanged() {
 }
 
 function showSuraList() {
-    $("#suraList").show();
-
+    $suraList.show();
 }
 
 function showQuery() {
-    $("#query").val("");
-    $("#query").show();
+    $query.val("");
+    $query.show();
 }
 
 
 function initSuraList() {
-    $("#suraList").empty();
-    for (var i = 0; i < surat.length; i++) {//
-        $("#suraList").append('<option value="' + i + '">' + surat[i] + '</option');
+    var options = '';
+    for (var i = 0; i < surat.length; i++) {
+        options += '<option value="' + i + '">' + surat[i] + '</option>';
     }
+    $suraList.html(options);
 }
 
 function all() {
-    $("#rowList").empty();
-    for (var i = 0; i < data.length; i++) {//
+    var rows = [];
+    for (var i = 0; i < data.length; i++) {
         var evenodd = i % 2 == 0 ? "even" : "odd";
-        var html = '' +
-            '<div class="row ' + evenodd + '">' +
-            '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
-            '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
-            '<div class="col-md-1 sura_text text-right" suraId="' + data[i].sura + '">' + surat[data[i].sura] + '</div>' +
-            '</div>';
-        $("#rowList").append(html);
+        rows.push(rowHtml(data[i].text, data[i].aya, data[i].sura, evenodd));
     }
+    $rowList.html(rows.join(""));
 }
 
 function none() {
-    $("#rowList").empty();
+    $rowList.empty();
+}
+
+function rowHtml(text, aya, sura, evenodd, tooltip) {
+    var title = tooltip ? ' data-toggle="tooltip" title="' + tooltip + '"' : '';
+    return '<div class="row ' + evenodd + '">' +
+        '<div class="col-md-10 aya_text text-right"' + title + '>' + text + '</div>' +
+        '<div class="col-md-1 aya_number text-right" >' + aya + '</div>' +
+        '<div class="col-md-1 sura_text text-right" suraId="' + sura + '">' + surat[sura] + '</div>' +
+        '</div>';
 }
 
 function suraSelected() {
-    var id = $("#suraList").val();
-    var suraId = parseInt(id);
-    $("#rowList").empty();
-    for (var i = 0; i < data.length; i++) {//data.length
-        if (data[i].sura === suraId) {
-            var evenodd = i % 2 == 0 ? "even" : "odd";
-            var html = '' +
-                '<div class="row ' + evenodd + '">' +
-                '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
-                '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
-                '<div class="col-md-1 sura_text text-right" suraId="' + data[i].sura + '">' + surat[data[i].sura] + '</div>' +
-                '</div>';
-            $("#rowList").append(html);
-        }
+    var suraId = parseInt($suraList.val(), 10);
+    var suraData = dataBySura[suraId] || [];
+    var rows = [];
+    for (var i = 0; i < suraData.length; i++) {
+        var evenodd = i % 2 == 0 ? "even" : "odd";
+        var d = suraData[i];
+        rows.push(rowHtml(d.text, d.aya, d.sura, evenodd));
     }
+    $rowList.html(rows.join(""));
 }
 
 function queryChanged() {
-    var q = $("#query").val();
+    var q = $query.val();
     if (q && q.length > 2) {
-        $("#rowList").empty();
+        var rows = [];
         for (var i = 0; i < data.length; i++) {
             if (data[i].text.indexOf(q) > -1) {
                 var evenodd = i % 2 == 0 ? "even" : "odd";
-                var html = '' +
-                    '<div class="row ' + evenodd + '">' +
-                    '<div class="col-md-10 aya_text text-right" >' + data[i].text + '</div>' +
-                    '<div class="col-md-1 aya_number text-right" >' + data[i].aya + '</div>' +
-                    '<div class="col-md-1 sura_text text-right" suraId="' + data[i].sura + '">' + surat[data[i].sura] + '</div>' +
-                    '</div>';
-                $("#rowList").append(html);
+                rows.push(rowHtml(data[i].text, data[i].aya, data[i].sura, evenodd));
             }
         }
+        $rowList.html(rows.join(""));
     } else if (!q || q === '') {
-        $("#rowList").empty();
+        $rowList.empty();
     }
-
 }
 
 function filterBy(filterList) {
-    $("#rowList").empty();
-    for (var i = 0; i < filterList.length; i++) {//data.length
+    var rows = [];
+    for (var i = 0; i < filterList.length; i++) {
         var x = filterList[i];
-        var y = _.find(data, { sura: x.sura, aya: x.aya });
+        var suraData = dataBySura[x.sura] || [];
+        var y;
+        for (var j = 0; j < suraData.length; j++) {
+            if (suraData[j].aya === x.aya) { y = suraData[j]; break; }
+        }
         if (y) {
             var evenodd = i % 2 == 0 ? "even" : "odd";
-            var html = '' +
-                '<div class="row ' + evenodd + '">' +
-                '<div class="col-md-10 aya_text text-right" data-toggle="tooltip" title="' + y.text + '" >' + y.text.substr(x.from, x.to) + '</div>' +
-                '<div class="col-md-1 aya_number text-right" >' + y.aya + '</div>' +
-                '<div class="col-md-1 sura_text text-right" suraId="' + y.sura + '">' + surat[y.sura] + '</div>' +
-                '</div>';
-            $("#rowList").append(html);
+            rows.push(rowHtml(y.text.substr(x.from, x.to), y.aya, y.sura, evenodd, y.text));
         }
     }
+    $rowList.html(rows.join(""));
 }
 
 
